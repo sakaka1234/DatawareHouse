@@ -1,0 +1,65 @@
+{
+  "uid": "agri-dwh-overview",
+  "title": "Agri DWH - Full Stack",
+  "tags": ["agri", "dwh"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Kafka ingest rate (messages/s)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [
+        {"expr": "sum(rate(kafka_topic_partition_current_offset{topic=\"agri.weather.hourly\"}[1m]))", "legendFormat": "messages/s", "refId": "A"}
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Messages in topic",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0},
+      "targets": [
+        {"expr": "sum(kafka_topic_partition_current_offset{topic=\"agri.weather.hourly\"})", "refId": "A"}
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Streaming sink rows",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+      "targets": [{"expr": "agri_stream_rows_total", "refId": "A"}]
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "HDFS capacity vs used",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [
+        {"expr": "agri_hdfs_capacity_bytes", "legendFormat": "capacity", "refId": "A"},
+        {"expr": "agri_hdfs_used_bytes", "legendFormat": "used", "refId": "B"}
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Active Spark applications",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 8},
+      "targets": [{"expr": "agri_spark_active_apps", "refId": "A"}]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Stream p95 latency (ms)",
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 8},
+      "targets": [{"expr": "agri_stream_latency_p95_ms", "refId": "A"}]
+    }
+  ]
+}

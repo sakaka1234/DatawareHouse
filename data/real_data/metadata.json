@@ -1,0 +1,62 @@
+{
+  "retrieved_at_utc": "2026-11-11T13:26:23+00:00",
+  "date_range": {
+    "start": "2015-01-01",
+    "end": "2024-12-31"
+  },
+  "locations": 12,
+  "weather_rows": 43836,
+  "cereal_rows": 100,
+  "missing_weather_values": {
+    "t2m_c": 0,
+    "t2m_max_c": 0,
+    "t2m_min_c": 0,
+    "precip_mm": 0,
+    "soil_wetness_root": 0,
+    "soil_wetness_top": 0,
+    "rh2m_pct": 0
+  },
+  "sources": {
+    "nasa_power": {
+      "description": "NASA POWER daily point API, MERRA-2 reanalysis, community AG",
+      "parameters": [
+        "T2M",
+        "T2M_MAX",
+        "T2M_MIN",
+        "PRECTOTCORR",
+        "GWETROOT",
+        "GWETTOP",
+        "RH2M"
+      ],
+      "docs": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+      "request_urls": {
+        "VN-CT": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=10.03&longitude=105.78&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "VN-HD": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=20.94&longitude=106.33&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "IN-PB": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=30.9&longitude=75.85&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "US-IA": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=42.19&longitude=-93.59&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "US-KS": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=37.97&longitude=-100.87&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "BR-PR": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=-24.96&longitude=-53.46&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "FR-CVL": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=48.45&longitude=1.49&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "KE-NKR": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=-0.3&longitude=36.07&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "MA-MEK": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=33.89&longitude=-5.55&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "RU-ROS": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=47.24&longitude=39.71&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "AR-PER": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=-33.89&longitude=-60.57&start=20150101&end=20241231&format=CSV&time-standard=LST",
+        "AU-DAL": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M%2CT2M_MAX%2CT2M_MIN%2CPRECTOTCORR%2CGWETROOT%2CGWETTOP%2CRH2M&community=AG&latitude=-27.18&longitude=151.26&start=20150101&end=20241231&format=CSV&time-standard=LST"
+      }
+    },
+    "world_bank": {
+      "description": "World Bank WDI cereal area, production and yield indicators",
+      "indicators": {
+        "AG.LND.CREL.HA": "cereal_area_ha",
+        "AG.PRD.CREL.MT": "cereal_production_mt",
+        "AG.YLD.CREL.KG": "cereal_yield_kg_per_ha"
+      },
+      "api": "https://api.worldbank.org/v2/",
+      "request_urls": {
+        "AG.LND.CREL.HA": "https://api.worldbank.org/v2/country/ARG;AUS;BRA;FRA;IND;KEN;MAR;RUS;USA;VNM/indicator/AG.LND.CREL.HA?format=json&per_page=2000&date=2015:2024",
+        "AG.PRD.CREL.MT": "https://api.worldbank.org/v2/country/ARG;AUS;BRA;FRA;IND;KEN;MAR;RUS;USA;VNM/indicator/AG.PRD.CREL.MT?format=json&per_page=2000&date=2015:2024",
+        "AG.YLD.CREL.KG": "https://api.worldbank.org/v2/country/ARG;AUS;BRA;FRA;IND;KEN;MAR;RUS;USA;VNM/indicator/AG.YLD.CREL.KG?format=json&per_page=2000&date=2015:2024"
+      }
+    }
+  }
+}

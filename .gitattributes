@@ -1,0 +1,2 @@
+data/real_data/*.csv filter=lfs diff=lfs merge=lfs -text
+data/real_data/extended/*.csv filter=lfs diff=lfs merge=lfs -text

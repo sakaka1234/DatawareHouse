@@ -1,0 +1,45 @@
+{
+  "retrieved_at_utc": "2026-11-11T13:47:11+00:00",
+  "frequency": "hourly",
+  "time_standard": "LST (local solar time, as returned by NASA POWER)",
+  "date_range": {
+    "start": "20150101",
+    "end": "20241231"
+  },
+  "locations": 12,
+  "rows": 1052064,
+  "missing_values": {
+    "t2m_c": 0,
+    "rh2m_pct": 0,
+    "precip_mm_h": 0,
+    "ws2m_ms": 0,
+    "soil_wetness_root": 0,
+    "soil_wetness_top": 0
+  },
+  "source": {
+    "description": "NASA POWER hourly point API, MERRA-2 reanalysis, community AG",
+    "parameters": [
+      "T2M",
+      "RH2M",
+      "PRECTOTCORR",
+      "WS2M",
+      "GWETROOT",
+      "GWETTOP"
+    ],
+    "docs": "https://power.larc.nasa.gov/docs/services/api/temporal/hourly/",
+    "request_urls": {
+      "VN-CT": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=10.03&longitude=105.78&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "VN-HD": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=20.94&longitude=106.33&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "IN-PB": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=30.9&longitude=75.85&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "US-IA": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=42.19&longitude=-93.59&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "US-KS": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=37.97&longitude=-100.87&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "BR-PR": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=-24.96&longitude=-53.46&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "FR-CVL": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=48.45&longitude=1.49&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "KE-NKR": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=-0.3&longitude=36.07&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "MA-MEK": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=33.89&longitude=-5.55&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "RU-ROS": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=47.24&longitude=39.71&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "AR-PER": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=-33.89&longitude=-60.57&start=20150101&end=20241231&format=CSV&time-standard=LST",
+      "AU-DAL": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CPRECTOTCORR%2CWS2M%2CGWETROOT%2CGWETTOP&community=AG&latitude=-27.18&longitude=151.26&start=20150101&end=20241231&format=CSV&time-standard=LST"
+    }
+  }
+}

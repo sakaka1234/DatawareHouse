@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+warehouse/
+stream/
+artifacts/
+reports/
+data/real_data/*.csv
+data/real_data/extended/*.csv
+docker/.env
+airflow/logs/
+notebooks/.ipynb_checkpoints/
+Thumbs.db
+.DS_Store
+

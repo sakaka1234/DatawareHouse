@@ -1,0 +1,394 @@
+# Full-stack profile for the Agri DWH simulation.
+# Sized for Docker Desktop with 8 GB of RAM. Override in docker/.env.
+
+name: agri-dwh
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    hostname: namenode
+    restart: unless-stopped
+    mem_limit: 512m
+    environment:
+      CLUSTER_NAME: agri
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      CORE_CONF_hadoop_http_staticuser_user: root
+      CORE_CONF_hadoop_proxyuser_root_hosts: "*"
+      CORE_CONF_hadoop_proxyuser_root_groups: "*"
+      CORE_CONF_hadoop_proxyuser_root_users: "*"
+      HDFS_CONF_dfs_namenode_name_dir: file:///hadoop/dfs/name
+      HDFS_CONF_dfs_replication: "1"
+      HDFS_CONF_dfs_permissions_enabled: "true"
+      HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check: "false"
+      HDFS_CONF_dfs_webhdfs_enabled: "true"
+      HDFS_CONF_dfs_client_use_datanode_hostname: "true"
+      HDFS_CONF_dfs_datanode_use_datanode_hostname: "true"
+      HDFS_NAMENODE_OPTS: "-Xmx320m"
+    ports:
+      - "${NAMENODE_UI_PORT:-9870}:9870"
+    volumes:
+      - namenode_data:/hadoop/dfs/name
+      - ../data:/data/agri:ro
+      - ../artifacts:/opt/agri/artifacts:ro
+    networks: [agri-net]
+    logging: *default-logging
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    hostname: datanode
+    restart: unless-stopped
+    mem_limit: 512m
+    depends_on: [namenode]
+    environment:
+      SERVICE_PRECONDITION: namenode:9870
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      HDFS_CONF_dfs_datanode_data_dir: file:///hadoop/dfs/data
+      HDFS_CONF_dfs_replication: "1"
+      HDFS_CONF_dfs_permissions_enabled: "true"
+      HDFS_CONF_dfs_webhdfs_enabled: "true"
+      HDFS_CONF_dfs_client_use_datanode_hostname: "true"
+      HDFS_CONF_dfs_datanode_use_datanode_hostname: "true"
+      HDFS_DATANODE_OPTS: "-Xmx320m"
+    ports:
+      - "${DATANODE_UI_PORT:-9864}:9864"
+    volumes:
+      - datanode_data:/hadoop/dfs/data
+    networks: [agri-net]
+    logging: *default-logging
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: agri-postgres
+    hostname: postgres
+    restart: unless-stopped
+    mem_limit: 256m
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: md5
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [agri-net]
+    logging: *default-logging
+
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-metastore
+    hostname: hive-metastore
+    restart: unless-stopped
+    mem_limit: 512m
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVICE_PRECONDITION: postgres:5432
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      HDFS_CONF_dfs_replication: "1"
+      HADOOP_HEAPSIZE: "384"
+    volumes:
+      - ./hive/hive-site.xml:/opt/hive/conf/hive-site.xml:ro
+      - ./hive/hive-env.sh:/opt/hive/conf/hive-env.sh:ro
+      - ./hive/start-metastore.sh:/start-metastore.sh:ro
+    command: ["/bin/bash", "/start-metastore.sh"]
+    networks: [agri-net]
+    logging: *default-logging
+
+  hiveserver2:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hiveserver2
+    hostname: hiveserver2
+    restart: unless-stopped
+    mem_limit: 768m
+    depends_on:
+      - hive-metastore
+    environment:
+      SERVICE_PRECONDITION: hive-metastore:9083
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      CORE_CONF_hadoop_proxyuser_root_hosts: "*"
+      CORE_CONF_hadoop_proxyuser_root_groups: "*"
+      HDFS_CONF_dfs_replication: "1"
+      HADOOP_HEAPSIZE: "512"
+    volumes:
+      - ./hive/hive-site.xml:/opt/hive/conf/hive-site.xml:ro
+      - ./hive/hive-env.sh:/opt/hive/conf/hive-env.sh:ro
+      - ./hive/start-hiveserver2.sh:/start-hiveserver2.sh:ro
+      - ../hive/sql:/opt/agri/hive/sql:ro
+    command: ["/bin/bash", "/start-hiveserver2.sh"]
+    ports:
+      - "${HIVESERVER2_PORT:-10000}:10000"
+    networks: [agri-net]
+    logging: *default-logging
+
+  spark-master:
+    image: bde2020/spark-master:3.3.0-hadoop3.3
+    container_name: spark-master
+    hostname: spark-master
+    restart: unless-stopped
+    mem_limit: 1024m
+    depends_on: [namenode, hiveserver2]
+    environment:
+      HOME: /root
+      SPARK_MASTER_PORT: "7077"
+      SPARK_MASTER_WEBUI_PORT: "8080"
+      SPARK_LOCAL_DIRS: /tmp/spark
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+    ports:
+      - "${SPARK_MASTER_UI_PORT:-8080}:8080"
+      - "7077:7077"
+      - "6066:6066"
+    volumes:
+      - ../spark:/opt/agri/spark:ro
+      - ../hive:/opt/agri/hive:ro
+      - ../artifacts:/opt/agri/artifacts
+      - ../reports:/opt/agri/reports
+      - spark_ivy:/root/.ivy2
+    networks: [agri-net]
+    logging: *default-logging
+
+  spark-worker:
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    container_name: spark-worker
+    hostname: spark-worker
+    restart: unless-stopped
+    mem_limit: 1280m
+    depends_on: [spark-master]
+    environment:
+      HOME: /root
+      SPARK_MASTER: spark://spark-master:7077
+      SPARK_WORKER_CORES: "2"
+      SPARK_WORKER_MEMORY: 1024m
+      SPARK_WORKER_WEBUI_PORT: "8081"
+      SPARK_LOCAL_DIRS: /tmp/spark
+    ports:
+      - "${SPARK_WORKER_UI_PORT:-8081}:8081"
+    volumes:
+      - ../spark:/opt/agri/spark:ro
+      - ../hive:/opt/agri/hive:ro
+      - ../artifacts:/opt/agri/artifacts
+      - ../reports:/opt/agri/reports
+      - spark_ivy:/root/.ivy2
+    networks: [agri-net]
+    logging: *default-logging
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kafka
+    hostname: kafka
+    restart: unless-stopped
+    mem_limit: 768m
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_HEAP_OPTS: "-Xms256m -Xmx384m"
+      CLUSTER_ID: agri-dwh-kraft-cluster
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks: [agri-net]
+    logging: *default-logging
+
+  tools:
+    build:
+      context: ./tools
+    image: agri-dwh/tools:1.0
+    container_name: agri-tools
+    hostname: tools
+    restart: unless-stopped
+    mem_limit: 1024m
+    depends_on: [hiveserver2, kafka]
+    environment:
+      HIVE_HOST: hiveserver2
+      HIVE_PORT: "10000"
+      KAFKA_BOOTSTRAP: kafka:9092
+      ARTIFACTS_DIR: /opt/agri/artifacts
+      REPORTS_DIR: /opt/agri/reports
+      PYTHONPATH: /opt/agri/tooling
+      HDFS_WEBHDFS: http://namenode:9870
+      SPARK_MASTER_REST: http://spark-master:6066
+    volumes:
+      - ../tooling:/opt/agri/tooling:ro
+      - ../ml:/opt/agri/ml:ro
+      - ../streaming:/opt/agri/streaming:ro
+      - ../benchmark:/opt/agri/benchmark:ro
+      - ../tests:/opt/agri/tests:ro
+      - ../spark:/opt/agri/spark:ro
+      - ../data:/data/agri:ro
+      - ../artifacts:/opt/agri/artifacts
+      - ../reports:/opt/agri/reports
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["sleep", "infinity"]
+    networks: [agri-net]
+    logging: *default-logging
+
+  airflow:
+    build:
+      context: ./airflow
+    image: agri-dwh/airflow:1.0
+    container_name: airflow
+    hostname: airflow
+    restart: unless-stopped
+    mem_limit: 768m
+    user: "0:0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      spark-master:
+        condition: service_started
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
+      AIRFLOW__CORE__PARALLELISM: "2"
+      AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "2"
+      AIRFLOW__WEBSERVER__WORKERS: "1"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
+      AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: "15"
+      _AIRFLOW_WWW_USER_USERNAME: admin
+      _AIRFLOW_WWW_USER_PASSWORD: admin
+      PROJECT_DIR: /opt/agri
+    ports:
+      - "${AIRFLOW_PORT:-8085}:8080"
+    volumes:
+      - ../airflow/dags:/opt/airflow/dags
+      - ../airflow/logs:/opt/airflow/logs
+      - ../:/opt/agri:ro
+      - ../artifacts:/opt/agri/artifacts
+      - ../reports:/opt/agri/reports
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./airflow/start.sh:/start-airflow.sh:ro
+    command: ["bash", "/start-airflow.sh"]
+    networks: [agri-net]
+    logging: *default-logging
+
+  superset:
+    build:
+      context: ./superset
+    image: agri-dwh/superset:1.0
+    container_name: superset
+    hostname: superset
+    restart: unless-stopped
+    mem_limit: 640m
+    depends_on:
+      postgres:
+        condition: service_healthy
+      hiveserver2:
+        condition: service_started
+    environment:
+      SUPERSET_SECRET_KEY: agri-dwh-demo-secret-change-me
+      SUPERSET_CONFIG_PATH: /app/pythonpath/superset_config.py
+    ports:
+      - "${SUPERSET_PORT:-8088}:8088"
+    volumes:
+      - ./superset/superset_config.py:/app/pythonpath/superset_config.py:ro
+      - ./superset/start.sh:/start-superset.sh:ro
+    command: ["/bin/bash", "/start-superset.sh"]
+    networks: [agri-net]
+    logging: *default-logging
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:v1.7.0
+    container_name: kafka-exporter
+    hostname: kafka-exporter
+    restart: unless-stopped
+    mem_limit: 96m
+    command: ["--kafka.server=kafka:9092"]
+    ports:
+      - "${KAFKA_EXPORTER_PORT:-9308}:9308"
+    depends_on: [kafka]
+    networks: [agri-net]
+    logging: *default-logging
+
+  agri-exporter:
+    image: agri-dwh/tools:1.0
+    container_name: agri-exporter
+    hostname: agri-exporter
+    restart: unless-stopped
+    mem_limit: 128m
+    depends_on: [tools]
+    environment:
+      HDFS_WEBHDFS: http://namenode:9870
+      SPARK_MASTER_REST: http://spark-master:6066
+      ARTIFACTS_DIR: /opt/agri/artifacts
+    volumes:
+      - ../tooling:/opt/agri/tooling:ro
+      - ../artifacts:/opt/agri/artifacts
+    command: ["python", "/opt/agri/tooling/exporter.py"]
+    ports:
+      - "${AGRI_EXPORTER_PORT:-9310}:9310"
+    networks: [agri-net]
+    logging: *default-logging
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    mem_limit: 192m
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prom_data:/prometheus
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    networks: [agri-net]
+    logging: *default-logging
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    mem_limit: 192m
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    depends_on: [prometheus]
+    networks: [agri-net]
+    logging: *default-logging
+
+volumes:
+  namenode_data:
+  datanode_data:
+  pg_data:
+  kafka_data:
+  spark_ivy:
+  prom_data:
+  grafana_data:
+
+networks:
+  agri-net:
+    driver: bridge
