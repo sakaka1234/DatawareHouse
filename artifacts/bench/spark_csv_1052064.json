@@ -1,0 +1,37 @@
+{
+  "bench_rows": 1052064,
+  "results": [
+    {
+      "engine": "spark_sql",
+      "source": "csv",
+      "scale": 1052064,
+      "query": "count_all",
+      "seconds_median": 2.17,
+      "result_rows": 1
+    },
+    {
+      "engine": "spark_sql",
+      "source": "csv",
+      "scale": 1052064,
+      "query": "avg_yield_by_location",
+      "seconds_median": 2.161,
+      "result_rows": 12
+    },
+    {
+      "engine": "spark_sql",
+      "source": "csv",
+      "scale": 1052064,
+      "query": "avg_soil_when_hot",
+      "seconds_median": 2.531,
+      "result_rows": 12
+    },
+    {
+      "engine": "spark_sql",
+      "source": "csv",
+      "scale": 1052064,
+      "query": "top10_yield",
+      "seconds_median": 2.594,
+      "result_rows": 10
+    }
+  ]
+}

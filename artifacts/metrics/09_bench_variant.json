@@ -1,0 +1,4 @@
+{
+  "output": "hdfs://namenode:9000/data/agri/processed/bench_parquet_unpartitioned",
+  "rows": 1052064
+}

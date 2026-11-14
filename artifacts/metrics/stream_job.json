@@ -1,0 +1,6 @@
+{
+  "note": "checkpoint kept for restart test",
+  "output": "hdfs://namenode:9000/data/agri/processed/stream_weather",
+  "query_id": "f9a247b4-21c0-4d80-a188-34df2c686952",
+  "status": "stopped"
+}

@@ -1,0 +1,38 @@
+{
+  "contamination": 0.005,
+  "event_caught": true,
+  "event_rank": 20,
+  "event_rows": 24,
+  "event_top_pct": 0.0019,
+  "flagged": 5441,
+  "flagged_pct": 0.5172,
+  "rows_scored": 1052064,
+  "sample_rows": 210413,
+  "top_anomaly": [
+    {
+      "event_time": "2024-09-07 11:00:00",
+      "location_id": "VN-HD",
+      "precip_mm_h": 12.9,
+      "rank": 1,
+      "rh2m_pct": 87.19,
+      "score": -0.23107764648077866,
+      "soil_wetness_root": 0.91,
+      "t2m_c": 27.75,
+      "ws2m_ms": 12.36,
+      "z_precip": 4.958041419662814
+    }
+  ],
+  "top_locations": {
+    "AR-PER": 339,
+    "BR-PR": 265,
+    "FR-CVL": 199,
+    "IN-PB": 597,
+    "MA-MEK": 510,
+    "RU-ROS": 211,
+    "US-IA": 974,
+    "US-KS": 1517,
+    "VN-CT": 369,
+    "VN-HD": 286
+  },
+  "zscore_flagged": 37
+}

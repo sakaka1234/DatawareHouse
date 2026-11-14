@@ -1,0 +1,8 @@
+{
+  "batch_id": "batch-20261112-032602",
+  "duplicates_sent": 0,
+  "late_injected": false,
+  "messages_per_second": 77.4,
+  "rows_sent": 10,
+  "seconds": 0.13
+}

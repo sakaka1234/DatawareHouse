@@ -1,0 +1,92 @@
+{
+  "baseline_test": {
+    "mae": 1432.359,
+    "mape_pct": 41.626,
+    "n": 60,
+    "r2": -0.0205,
+    "rmse": 1763.073
+  },
+  "best_model": "random_forest",
+  "comparison": {
+    "baseline_mean": {
+      "validation": {
+        "mae": 1355.36,
+        "mape_pct": 43.96,
+        "n": 30,
+        "r2": -0.0174,
+        "rmse": 1698.198
+      }
+    },
+    "gradient_boosting": {
+      "validation": {
+        "mae": 621.851,
+        "mape_pct": 22.284,
+        "n": 30,
+        "r2": 0.7476,
+        "rmse": 845.877
+      }
+    },
+    "random_forest": {
+      "validation": {
+        "mae": 497.042,
+        "mape_pct": 14.19,
+        "n": 30,
+        "r2": 0.8798,
+        "rmse": 583.62
+      }
+    },
+    "ridge": {
+      "validation": {
+        "mae": 1072.923,
+        "mape_pct": 38.091,
+        "n": 30,
+        "r2": 0.2992,
+        "rmse": 1409.4
+      }
+    }
+  },
+  "countries": 30,
+  "feature_importance": {
+    "dry_days": 0.0415,
+    "frost_days": 0.0775,
+    "gdd": 0.0733,
+    "heat_days_35": 0.0208,
+    "latitude": 0.2913,
+    "longitude": 0.2118,
+    "max_dry_spell": 0.0243,
+    "precip_total": 0.0933,
+    "rh_mean": 0.0537,
+    "soil_mean": 0.0352,
+    "soil_min": 0.0519,
+    "soil_p95": 0.0254
+  },
+  "features": [
+    "gdd",
+    "heat_days_35",
+    "frost_days",
+    "precip_total",
+    "dry_days",
+    "max_dry_spell",
+    "soil_mean",
+    "soil_min",
+    "soil_p95",
+    "rh_mean",
+    "latitude",
+    "longitude"
+  ],
+  "mae_improvement_pct": 70.9,
+  "test": {
+    "mae": 416.848,
+    "mape_pct": 10.648,
+    "n": 60,
+    "r2": 0.9088,
+    "rmse": 526.973
+  },
+  "test_rows": 60,
+  "train_rows": 360,
+  "validation_rows": 30,
+  "years": [
+    2010,
+    2024
+  ]
+}

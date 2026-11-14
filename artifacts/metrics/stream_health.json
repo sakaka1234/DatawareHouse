@@ -1,0 +1,8 @@
+{
+  "approx_consumer_lag": 200767,
+  "checked_at": "2026-11-14T08:04:57",
+  "ok": false,
+  "sink_rows": 0,
+  "topic": "agri.weather.hourly",
+  "topic_messages": 200767
+}

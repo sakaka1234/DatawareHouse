@@ -1,0 +1,59 @@
+{
+  "best_by_location": {
+    "FR-CVL": "persistence",
+    "US-IA": "persistence",
+    "VN-CT": "persistence"
+  },
+  "horizon_days": 7,
+  "locations": {
+    "FR-CVL": {
+      "persistence": {
+        "mae": 0.00999,
+        "n": 3101
+      },
+      "ridge": {
+        "mae": 0.01852,
+        "n": 3101
+      },
+      "sarimax": {
+        "mae": 0.01018,
+        "n": 3101
+      }
+    },
+    "US-IA": {
+      "persistence": {
+        "mae": 0.01164,
+        "n": 3101
+      },
+      "ridge": {
+        "mae": 0.0227,
+        "n": 3101
+      },
+      "sarimax": {
+        "mae": 0.01204,
+        "n": 3101
+      }
+    },
+    "VN-CT": {
+      "persistence": {
+        "mae": 0.01447,
+        "n": 3101
+      },
+      "ridge": {
+        "mae": 0.01965,
+        "n": 3101
+      },
+      "sarimax": {
+        "mae": 0.0145,
+        "n": 3101
+      }
+    }
+  },
+  "origins_per_location": {
+    "FR-CVL": 443,
+    "US-IA": 443,
+    "VN-CT": 443
+  },
+  "ridge_beats_persistence": [],
+  "sarimax_beats_persistence": []
+}

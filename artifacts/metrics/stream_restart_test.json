@@ -1,0 +1,7 @@
+{
+  "distinct_location_events": 100000,
+  "duplicate_rows": 0,
+  "latency_max_ms": 79677,
+  "latency_p95_ms": 78950,
+  "rows": 100000
+}

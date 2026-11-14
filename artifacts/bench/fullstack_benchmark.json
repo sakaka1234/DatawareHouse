@@ -1,0 +1,260 @@
+{
+  "results": [
+    {
+      "engine": "hive",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 100000,
+      "seconds_median": 19.494,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 20.625,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 19.811,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 100000,
+      "seconds_median": 20.422,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 1052064,
+      "seconds_median": 17.711,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 18.208,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 24.144,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "hive",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 1052064,
+      "seconds_median": 31.773,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 100000,
+      "seconds_median": 3.841,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 3.844,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 4.49,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 100000,
+      "seconds_median": 3.315,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 1052064,
+      "seconds_median": 5.314,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 6.834,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 5.995,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 1052064,
+      "seconds_median": 8.917,
+      "source": "parquet_partitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 100000,
+      "seconds_median": 1.157,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 1.103,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 100000,
+      "seconds_median": 0.981,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 100000,
+      "seconds_median": 0.778,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 1052064,
+      "seconds_median": 1.932,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 2.153,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 2.521,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 1052064,
+      "seconds_median": 2.304,
+      "source": "parquet_unpartitioned"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 100000,
+      "seconds_median": 1.071,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 2,
+      "scale": 100000,
+      "seconds_median": 1.253,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 2,
+      "scale": 100000,
+      "seconds_median": 1.129,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 100000,
+      "seconds_median": 0.907,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "count_all",
+      "result_rows": 1,
+      "scale": 1052064,
+      "seconds_median": 2.17,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_yield_by_location",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 2.161,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "avg_soil_when_hot",
+      "result_rows": 12,
+      "scale": 1052064,
+      "seconds_median": 2.531,
+      "source": "csv"
+    },
+    {
+      "engine": "spark_sql",
+      "query": "top10_yield",
+      "result_rows": 10,
+      "scale": 1052064,
+      "seconds_median": 2.594,
+      "source": "csv"
+    }
+  ]
+}

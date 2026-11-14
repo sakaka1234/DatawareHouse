@@ -1,0 +1,7 @@
+{
+  "duplicate_keys": 0,
+  "locations": 12,
+  "output": "hdfs://namenode:9000/data/agri/processed/fact_weather_hourly",
+  "partitions": 120,
+  "rows": 1052064
+}
